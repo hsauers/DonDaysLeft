@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             background-color: #FFA552; /* Creamsicle orange */
-            color: #333;
+            color: #FFF;
         }
         h1 {
             color: #FFF; /* White title */
@@ -19,20 +19,21 @@
         }
         #countdown {
             font-size: 2em;
-            color: #333; /* Dark text color for contrast */
-            background-color: #FFF; /* White background */
-            border: 2px solid #FFF;
+            color: #FFF; /* White text */
+            background-color: #FFA552; /* Creamsicle orange background */
+            border: 2px solid #FFF; /* White border */
             padding: 20px;
             display: inline-block;
-            border-radius: 10px;
+            border-radius: 10px; /* Rounded corners */
             margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for effect */
         }
-        #image-placeholder {
+        #main-image {
             margin-top: 30px;
         }
-        #image-placeholder img {
+        #main-image img {
             border: 8px solid #FFF; /* Thick white border */
-            border-radius: 10px;
+            border-radius: 10px; /* Rounded corners */
             max-width: 90%; /* Scale image responsively */
             height: auto;
         }
@@ -41,9 +42,9 @@
 <body>
     <h1>Countdown to Inauguration Day 2029</h1>
     <div id="countdown"></div>
-    <div id="image-placeholder">
+    <div id="main-image">
         <!-- Placeholder for an image -->
-        <img src="placeholder.png" alt="Placeholder Image">
+        <img src="img/orange-creamsicle-baby-1.jpg" alt="Organge Creamsicle Baby">
     </div>
 
     <script>
