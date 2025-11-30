@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown to Inauguration Day 2029</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="description" content="Live countdown to Inauguration Day 2029!">
+    <meta property="og:title" content="Countdown to Inauguration Day 2029">
+    <meta property="og:description" content="Live countdown to Inauguration Day 2029!">
+    <meta property="og:image" content="img/orange-creamsicle-baby-1.jpg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,21 +44,80 @@
             max-width: 90%; /* Scale image responsively */
             height: auto;
         }
+        /* Responsive improvements */
+        @media (max-width: 600px) {
+            #countdown {
+                font-size: 1.2em;
+                padding: 10px;
+            }
+            #main-image img {
+                max-width: 100%;
+                border-width: 4px;
+            }
+            h1 {
+                font-size: 1.3em;
+            }
+        }
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #222;
+            color: #FFA552;
+        }
+        body.dark-mode #countdown {
+            background-color: #222;
+            color: #FFA552;
+            border-color: #FFA552;
+        }
+        body.dark-mode h1 {
+            color: #FFA552;
+        }
+        body.dark-mode #main-image img {
+            border-color: #FFA552;
+        }
     </style>
 </head>
 <body>
     <h1>Countdown to Inauguration Day 2029</h1>
+    <div id="menu" style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+        <button id="toggle-dark">🌓</button>
+        <select id="lang-select" style="margin: 0 8px;">
+            <option value="en">🇺🇸</option>
+            <option value="es">🇪🇸</option>
+        </select>
+        <button id="share-btn">🔗</button>
+    </div>
     <div id="countdown"></div>
+    <div id="progress-container" style="width: 90%; margin: 20px auto; background: #fff2; border-radius: 10px; height: 24px; max-width: 500px;">
+        <div id="progress-bar" style="height: 100%; width: 0; background: #fff; border-radius: 10px; transition: width 0.5s;"></div>
+    </div>
     <div id="main-image">
         <!-- Placeholder for an image -->
-        <img src="img/orange-creamsicle-baby-1.jpg" alt="Organge Creamsicle Baby">
+        <img id="random-image" src="img/orange-creamsicle-baby-1.jpg" alt="Organge Creamsicle Baby">
     </div>
 
     <script>
         // Set the date of the next Inauguration Day
         const inaugurationDate = new Date('January 20, 2029 12:00:00').getTime();
 
-        // Update the countdown every second
+        // --- Dark mode toggle ---
+        const darkBtn = document.getElementById('toggle-dark');
+        darkBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // --- Random image from img/ folder ---
+        const imageList = [
+            'img/orange-creamsicle-baby-1.jpg',
+            'img/creamsicle-202511a.png',
+            'img/creamsicle-202511b.png'
+        ];
+        function getRandomImage() {
+            return imageList[Math.floor(Math.random() * imageList.length)];
+        }
+        const randomImage = document.getElementById('random-image');
+        randomImage.src = getRandomImage();
+
+        // --- Countdown logic (audio removed) ---
         const countdownInterval = setInterval(() => {
             // Get the current date and time
             const now = new Date().getTime();
@@ -72,9 +138,57 @@
             // If the countdown is over, display a message
             if (timeDifference < 0) {
                 clearInterval(countdownInterval);
-                document.getElementById('countdown').innerHTML = 'Inauguration Day has arrived!';
+                document.getElementById('countdown').innerHTML = translations[langSelect.value].arrived;
             }
         }, 1000);
+
+        // --- Progress bar logic ---
+        const progressBar = document.getElementById('progress-bar');
+        const progressContainer = document.getElementById('progress-container');
+        const startDate = new Date('January 20, 2025 00:00:00').getTime();
+        function updateProgressBar() {
+            const now = new Date().getTime();
+            const percent = Math.min(100, Math.max(0, ((now - startDate) / (inaugurationDate - startDate)) * 100));
+            progressBar.style.width = percent + '%';
+            progressBar.title = percent.toFixed(2) + '% elapsed';
+        }
+        setInterval(updateProgressBar, 1000);
+        updateProgressBar();
+
+        // --- Localization logic ---
+        const translations = {
+            en: {
+                title: 'Countdown to Inauguration Day 2029',
+                arrived: 'Inauguration Day has arrived!'
+            },
+            es: {
+                title: 'Cuenta regresiva para el Día de la Investidura 2029',
+                arrived: '¡Ha llegado el Día de la Investidura!'
+            }
+        };
+        const langSelect = document.getElementById('lang-select');
+        function updateLanguage() {
+            const lang = langSelect.value;
+            document.querySelector('h1').innerText = translations[lang].title;
+            if (document.getElementById('countdown').innerText === translations['en'].arrived || document.getElementById('countdown').innerText === translations['es'].arrived) {
+                document.getElementById('countdown').innerText = translations[lang].arrived;
+            }
+        }
+        langSelect.addEventListener('change', updateLanguage);
+        updateLanguage();
+
+        // --- Share button logic ---
+        const shareBtn = document.getElementById('share-btn');
+        shareBtn.addEventListener('click', () => {
+            const shareText = `Countdown to Inauguration Day 2029: ${document.getElementById('countdown').innerText}`;
+            const shareUrl = window.location.href;
+            if (navigator.share) {
+                navigator.share({ title: 'Countdown to Inauguration Day 2029', text: shareText, url: shareUrl });
+            } else {
+                const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+                window.open(twitterUrl, '_blank');
+            }
+        });
     </script>
 </body>
 </html>
