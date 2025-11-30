@@ -47,6 +47,8 @@ Add your tasks and instructions below:
 - [x] Move the language picker, dark mode toggle, and share buttons to a dynamic menu in the upper right of the page
 - [x] Make the progress bar start date be January 20th, 2025
 - [x] Update the README accordingly
+- [x] On mobile devices with a smaller display, the upper left buttons overlap the pages "Countdown to..." title. Make it so these buttons are above the title and do not overlap anything.
+- [x] Make the image display area a consistent size that is 80% of what is shown currently.
 
 ---
 
